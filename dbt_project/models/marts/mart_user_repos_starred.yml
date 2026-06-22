@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: mart_user_repos_starred
+    columns:
+      - name: user_id
+        tests: [not_null, unique]
+      - name: repos_starred
+        tests: [not_null]

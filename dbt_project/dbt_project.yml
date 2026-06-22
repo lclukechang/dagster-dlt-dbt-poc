@@ -1,0 +1,22 @@
+name: github_stars
+version: 1.0.0
+config-version: 2
+profile: github_stars
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  github_stars:
+    staging:
+      +schema: staging
+    marts:
+      +schema: marts

@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: stg_stargazers
+    columns:
+      - name: stargazer_sk
+        tests: [not_null, unique]
+      - name: repo
+        tests: [not_null]
+      - name: user_id
+        tests: [not_null]
+      - name: starred_at
+        tests: [not_null]

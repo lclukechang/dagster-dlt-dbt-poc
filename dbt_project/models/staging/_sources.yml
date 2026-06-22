@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: stargazers__dbt_core
+        meta:
+          dagster:
+            asset_key: ["dlt_rest_api_stargazers__dbt_core"]
+      - name: stargazers__airflow
+        meta:
+          dagster:
+            asset_key: ["dlt_rest_api_stargazers__airflow"]
+      - name: stargazers__dagster
+        meta:
+          dagster:
+            asset_key: ["dlt_rest_api_stargazers__dagster"]
+      - name: stargazers__duckdb
+        meta:
+          dagster:
+            asset_key: ["dlt_rest_api_stargazers__duckdb"]
+      - name: stargazers__dlt
+        meta:
+          dagster:
+            asset_key: ["dlt_rest_api_stargazers__dlt"]

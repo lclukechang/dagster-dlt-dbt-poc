@@ -1,0 +1,19 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# warehouse + pipeline state
+data/
+.dlt/
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+dbt_project/.user.yml
+
+# dagster
+.tmp_dagster_home/
+dagster_home/

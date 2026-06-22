@@ -1,0 +1,19 @@
+[project]
+name = "github-stars-poc"
+version = "0.1.0"
+description = "POC: dlt + dbt Core + Dagster + DuckDB for GitHub stargazers"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "dagster>=1.13.10",
+    "dagster-dbt>=0.29.10",
+    "dagster-dlt>=0.29.10",
+    "dagster-webserver>=1.13.10",
+    "dbt-core>=1.11.11",
+    "dbt-duckdb>=1.10.1",
+    "dlt[duckdb]>=1.28.1",
+    "python-dotenv>=1.2.2",
+]
+
+[tool.dagster]
+module_name = "github_stars.definitions"

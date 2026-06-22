@@ -1,0 +1,8 @@
+github_stars:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/warehouse.duckdb
+      schema: analytics_dev
+      threads: 4
