@@ -2,12 +2,21 @@ version: 2
 
 models:
   - name: stg_stargazers
+    description: >
+      One row per stargazer event across all five tracked repos. Unions raw per-repo
+      tables, adds a repo label, casts starred_at to timestamp, and assigns a surrogate key.
     columns:
       - name: stargazer_sk
+        description: Surrogate key on (user_id, starred_at, repo).
         tests: [not_null, unique]
       - name: repo
+        description: GitHub repo slug (owner/name).
         tests: [not_null]
       - name: user_id
+        description: GitHub user ID of the stargazer.
         tests: [not_null]
+      - name: user_login
+        description: GitHub username of the stargazer.
       - name: starred_at
+        description: Timestamp when the user starred the repo.
         tests: [not_null]

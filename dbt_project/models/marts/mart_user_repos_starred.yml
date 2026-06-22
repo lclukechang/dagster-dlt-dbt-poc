@@ -2,8 +2,15 @@ version: 2
 
 models:
   - name: mart_user_repos_starred
+    description: >
+      One row per GitHub user who starred at least one tracked repo. Aggregates staging
+      to show how many of the five repos each user starred and which ones.
     columns:
       - name: user_id
+        description: GitHub user ID.
         tests: [not_null, unique]
       - name: repos_starred
+        description: Count of distinct tracked repos starred by this user (1–5).
         tests: [not_null]
+      - name: repos
+        description: Comma-separated list of repo slugs starred by this user.

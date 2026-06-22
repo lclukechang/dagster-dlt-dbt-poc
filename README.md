@@ -10,6 +10,16 @@ A local proof-of-concept using **dlt**, **dbt Core**, **Dagster**, and **DuckDB*
 - [duckdb/duckdb](https://github.com/duckdb/duckdb)
 - [dlt-hub/dlt](https://github.com/dlt-hub/dlt)
 
+
+## Project layout
+
+```
+dlt_sources/             # dlt extract logic (no Dagster imports)
+github_stars/          # Dagster code location (dlt + dbt assets)
+dbt_project/           # dbt models (staging + marts)
+data/warehouse.duckdb  # local DuckDB warehouse (gitignored)
+```
+
 ## Architecture
 
 ```
@@ -60,6 +70,37 @@ Useful for finding users who star multiple projects in this set (values 1–5).
 |-------|--------|
 | `ingest` | 5 dlt stargazer resources |
 | `dbt_transform` | `stg_stargazers`, `mart_user_repos_starred` |
+
+## dbt schema YAML
+
+Each dbt model has a colocated `.yml` file declaring the model, column descriptions, and data tests. These run as part of `dbt build` when Dagster materializes the dbt assets.
+
+### Sources — [`dbt_project/models/staging/_sources.yml`](dbt_project/models/staging/_sources.yml)
+
+Declares the five `raw` tables produced by dlt. Each table entry includes:
+
+- **`description`** — what repo the table holds
+- **`meta.dagster.asset_key`** — links the dbt source to its upstream dlt asset for Dagster lineage
+
+### Staging — [`dbt_project/models/staging/stg_stargazers.yml`](dbt_project/models/staging/stg_stargazers.yml)
+
+| Column | Description | Tests |
+|--------|-------------|-------|
+| `stargazer_sk` | Surrogate key on `(user_id, starred_at, repo)` | `not_null`, `unique` |
+| `repo` | GitHub repo slug | `not_null` |
+| `user_id` | GitHub user ID | `not_null` |
+| `user_login` | GitHub username | — |
+| `starred_at` | When the star was created | `not_null` |
+
+### Marts — [`dbt_project/models/marts/mart_user_repos_starred.yml`](dbt_project/models/marts/mart_user_repos_starred.yml)
+
+| Column | Description | Tests |
+|--------|-------------|-------|
+| `user_id` | GitHub user ID | `not_null`, `unique` |
+| `repos_starred` | Number of tracked repos starred (1–5) | `not_null` |
+| `repos` | Comma-separated repo slugs | — |
+
+To view compiled docs locally: `cd dbt_project && uv run dbt docs generate --profiles-dir . && uv run dbt docs serve --profiles-dir .`
 
 ## Prerequisites
 
@@ -131,18 +172,8 @@ ORDER BY repos_starred DESC
 LIMIT 20;
 ```
 
-**Schema names:** dlt writes to `raw`. dbt prefixes custom schemas with `analytics_dev` from `profiles.yml`, so models land in `analytics_dev_staging` and `analytics_dev_marts` unless you add a `generate_schema_name` macro.
-
 ## GitHub API limits
 
 - **Rate limit**: 5,000 requests/hour with a token (required).
 - **Stargazers pagination cap**: GitHub hard-stops the stargazers endpoint at **400 pages × 100 = 40,000 records**. Repos with more than 40k stars will only return the oldest 40k chronologically.
 
-## Project layout
-
-```
-dlt_sources/             # dlt extract logic (no Dagster imports)
-github_stars/          # Dagster code location (dlt + dbt assets)
-dbt_project/           # dbt models (staging + marts)
-data/warehouse.duckdb  # local DuckDB warehouse (gitignored)
-```

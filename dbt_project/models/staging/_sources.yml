@@ -2,25 +2,31 @@ version: 2
 
 sources:
   - name: raw
+    description: Stargazer records loaded by dlt from the GitHub REST API (one table per tracked repo).
     schema: raw
     tables:
       - name: stargazers__dbt_core
+        description: Stargazers for dbt-labs/dbt-core.
         meta:
           dagster:
             asset_key: ["dlt_rest_api_stargazers__dbt_core"]
       - name: stargazers__airflow
+        description: Stargazers for apache/airflow.
         meta:
           dagster:
             asset_key: ["dlt_rest_api_stargazers__airflow"]
       - name: stargazers__dagster
+        description: Stargazers for dagster-io/dagster.
         meta:
           dagster:
             asset_key: ["dlt_rest_api_stargazers__dagster"]
       - name: stargazers__duckdb
+        description: Stargazers for duckdb/duckdb.
         meta:
           dagster:
             asset_key: ["dlt_rest_api_stargazers__duckdb"]
       - name: stargazers__dlt
+        description: Stargazers for dlt-hub/dlt.
         meta:
           dagster:
             asset_key: ["dlt_rest_api_stargazers__dlt"]
