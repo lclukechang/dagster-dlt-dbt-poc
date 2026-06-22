@@ -12,6 +12,7 @@ load_dotenv()
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DUCKDB_PATH = PROJECT_ROOT / "data" / "warehouse.duckdb"
+DUCKDB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 
 @dlt_assets(

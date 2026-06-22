@@ -44,7 +44,7 @@ with unioned as (
 )
 
 select
-    {{ dbt.generate_surrogate_key(['user_id', 'starred_at', 'repo']) }} as stargazer_sk,
+    {{ dbt_utils.generate_surrogate_key(['user_id', 'starred_at', 'repo']) }} as stargazer_sk,
     repo,
     user_id,
     user_login,
